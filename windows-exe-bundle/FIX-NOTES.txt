@@ -1,0 +1,17 @@
+2026-03-11 修复说明
+
+你之前看到的报错：
+  No module named scrapling.__main__; 'scrapling' is a package and cannot be directly executed
+
+原因：
+- 旧版脚本把 Scrapling 运行时安装命令写成了：
+  python -m scrapling install --force
+- 这是错的，因为 scrapling 不是这样启动的。
+
+已修复为：
+- 直接调用虚拟环境里的：
+  .venv\Scripts\scrapling.exe install --force
+
+如果你重新下载更新后的 zip，再跑：
+- build_windows_onefile.bat
+应该就能继续往下走。

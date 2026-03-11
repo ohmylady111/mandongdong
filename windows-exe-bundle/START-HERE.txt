@@ -1,0 +1,6 @@
+Start here for the native desktop version of 漫咚咚:
+
+1) Run diagnose_windows_env.bat
+2) Run build_native_ui_onefile.bat
+3) Find dist\\ManDongDong.exe
+4) If you want an installer, run build_native_ui_installer.bat

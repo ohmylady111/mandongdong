@@ -57,6 +57,9 @@ output\ManDongDong-Setup.exe
 - `AuthorizedMangaDownloaderDesktop.iss`
 - `requirements-windows.txt`
 - `assets/`
+- `../ManDongDong.spec`
+
+The desktop app build now uses a dedicated PyInstaller spec file for more stable packaging.
 
 ## Notes
 

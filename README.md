@@ -1,5 +1,9 @@
 # 漫咚咚 / ManDongDong
 
+[![Windows Release Build](https://github.com/ohmylady111/mandongdong/actions/workflows/windows-release.yml/badge.svg)](https://github.com/ohmylady111/mandongdong/actions/workflows/windows-release.yml)
+[![Release](https://img.shields.io/github/v/release/ohmylady111/mandongdong)](https://github.com/ohmylady111/mandongdong/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 A cute-yet-practical desktop downloader for **authorized manga / comic / gallery sources**.
 
 > The app name shown in UI is **漫咚咚**. For better compatibility with Windows packaging tools, the EXE / installer filenames use **ManDongDong**.
@@ -34,6 +38,7 @@ Working features:
 - Real-time logs
 - Simple progress stats
 - Windows one-file EXE / installer packaging scripts
+- GitHub Actions workflow for Windows release builds
 
 ## Project structure
 
@@ -41,9 +46,11 @@ Working features:
 .
 ├── authorized_manga_downloader.py          # core downloader logic
 ├── authorized_manga_downloader_desktop.py  # native desktop GUI (PySide6)
+├── ManDongDong.spec                        # PyInstaller spec for stable packaging
 ├── make_program_icon.py                    # classic icon generator
 ├── make_program_icon_anime.py              # anime-style icon generator
 ├── windows-exe-bundle/                     # Windows packaging materials
+├── .github/workflows/                      # GitHub Actions workflows
 └── screenshots/                            # screenshots / hero assets
 ```
 
@@ -85,9 +92,21 @@ Expected outputs:
 - `dist\ManDongDong.exe`
 - `output\ManDongDong-Setup.exe`
 
+## GitHub Actions release build
+
+This repository now includes a Windows release workflow:
+
+- Workflow file: `.github/workflows/windows-release.yml`
+- Triggers:
+  - manual dispatch
+  - pushing a tag like `v0.1.1`
+
+On tag builds, the workflow uploads `dist/ManDongDong.exe` as a release asset.
+
 ## Notes
 
-- The current desktop app launches the core downloader as a subprocess instead of re-implementing the download engine.
+- The desktop app can run its downloader worker in packaged/frozen mode, so the EXE is no longer tied to an external `.py` path.
+- The current desktop app still launches the core downloader as a subprocess instead of re-implementing the download engine.
 - Stop is currently a hard stop / process termination in MVP.
 - Progress is estimated primarily by page-level signals, not exact per-image progress.
 - First-time Scrapling runtime setup may take a while.

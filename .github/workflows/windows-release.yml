@@ -1,0 +1,57 @@
+name: Build Windows Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements.txt
+            windows-exe-bundle/requirements-windows.txt
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r windows-exe-bundle/requirements-windows.txt
+
+      - name: Install Scrapling runtime
+        shell: pwsh
+        run: |
+          scrapling install --force
+
+      - name: Build one-file EXE
+        shell: pwsh
+        run: |
+          pyinstaller --noconfirm --clean ManDongDong.spec
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ManDongDong-windows-x64
+          path: dist/ManDongDong.exe
+
+      - name: Publish release asset
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/ManDongDong.exe
+          generate_release_notes: true

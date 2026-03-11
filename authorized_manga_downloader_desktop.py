@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -39,7 +40,16 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-APP_ROOT = Path(__file__).resolve().parent
+if getattr(sys, "frozen", False):
+    APP_ROOT = Path(sys.executable).resolve().parent
+    IMPORT_ROOT = Path(getattr(sys, "_MEIPASS", APP_ROOT))
+else:
+    APP_ROOT = Path(__file__).resolve().parent
+    IMPORT_ROOT = APP_ROOT
+
+if str(IMPORT_ROOT) not in sys.path:
+    sys.path.insert(0, str(IMPORT_ROOT))
+
 DATA_ROOT = APP_ROOT / "ui-data"
 CONFIG_DIR = DATA_ROOT / "desktop-configs"
 RUN_DIR = DATA_ROOT / "desktop-runs"
@@ -504,7 +514,7 @@ class MainWindow(QMainWindow):
         self.process = QProcess(self)
         self.process.setWorkingDirectory(str(APP_ROOT))
         self.process.setProgram(sys.executable)
-        self.process.setArguments([str(APP_ROOT / "authorized_manga_downloader.py"), "--config", str(self.current_run_config_path)])
+        self.process.setArguments(self.worker_command(self.current_run_config_path))
         self.process.readyReadStandardOutput.connect(self.on_stdout)
         self.process.readyReadStandardError.connect(self.on_stderr)
         self.process.finished.connect(self.on_finished)
@@ -623,13 +633,33 @@ class MainWindow(QMainWindow):
     def _lines(edit: QPlainTextEdit) -> list[str]:
         return [line.strip() for line in edit.toPlainText().splitlines() if line.strip()]
 
+    @staticmethod
+    def worker_command(config_path: Path) -> list[str]:
+        if getattr(sys, "frozen", False):
+            return ["--worker", str(config_path)]
+        return [str(Path(__file__).resolve()), "--worker", str(config_path)]
 
-def main() -> int:
+
+def run_worker(config_path: str) -> int:
+    import authorized_manga_downloader as downloader
+    return downloader.run_config_path(config_path)
+
+
+def run_gui() -> int:
     app = QApplication(sys.argv)
     app.setApplicationName(WINDOW_TITLE)
     window = MainWindow()
     window.show()
     return app.exec()
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--worker", help="Internal: run downloader worker with a config path")
+    args = parser.parse_args(argv)
+    if args.worker:
+        return run_worker(args.worker)
+    return run_gui()
 
 
 if __name__ == "__main__":

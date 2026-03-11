@@ -37,14 +37,8 @@ if exist ".venv\Scripts\scrapling.exe" (
   goto :fail
 )
 
-echo [6/6] Building native desktop ONEFILE EXE with PyInstaller...
-pyinstaller --noconfirm --clean --onefile --windowed --name ManDongDong ^
-  --icon "assets\AuthorizedMangaDownloaderDesktop.ico" ^
-  --collect-all scrapling ^
-  --collect-all PySide6 ^
-  --hidden-import authorized_manga_downloader ^
-  --add-data "..\authorized_manga_downloader.py;." ^
-  ..\authorized_manga_downloader_desktop.py || goto :fail
+echo [6/6] Building native desktop ONEFILE EXE with PyInstaller spec...
+pyinstaller --noconfirm --clean ..\ManDongDong.spec || goto :fail
 
 echo.
 echo ==========================================

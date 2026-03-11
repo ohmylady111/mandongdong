@@ -1,5 +1,9 @@
 # 漫咚咚 / ManDongDong
 
+[![Windows Release Build](https://github.com/ohmylady111/mandongdong/actions/workflows/windows-release.yml/badge.svg)](https://github.com/ohmylady111/mandongdong/actions/workflows/windows-release.yml)
+[![Release](https://img.shields.io/github/v/release/ohmylady111/mandongdong)](https://github.com/ohmylady111/mandongdong/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 一个偏可爱风、但实际能干活的 **授权来源漫画 / 图集下载器**。
 
 > 程序界面显示名是 **漫咚咚**；为了减少 Windows 打包链对中文文件名的兼容问题，EXE / 安装包文件名采用 **ManDongDong**。
@@ -34,6 +38,7 @@
 - 实时日志
 - 简单进度统计
 - Windows 单文件 EXE / 安装包打包脚本
+- GitHub Actions Windows 自动构建流程
 
 ## 项目结构
 
@@ -41,9 +46,11 @@
 .
 ├── authorized_manga_downloader.py          # 下载核心逻辑
 ├── authorized_manga_downloader_desktop.py  # 原生桌面 GUI（PySide6）
+├── ManDongDong.spec                        # PyInstaller 打包配置
 ├── make_program_icon.py                    # 经典图标生成脚本
 ├── make_program_icon_anime.py              # 二次元图标生成脚本
 ├── windows-exe-bundle/                     # Windows 打包材料
+├── .github/workflows/                      # GitHub Actions 工作流
 └── screenshots/                            # 展示图 / 截图资源
 ```
 
@@ -85,9 +92,21 @@ python3 authorized_manga_downloader_desktop.py
 - `dist\ManDongDong.exe`
 - `output\ManDongDong-Setup.exe`
 
+## GitHub Actions 自动构建
+
+仓库现在已经带了 Windows 自动构建流程：
+
+- 工作流文件：`.github/workflows/windows-release.yml`
+- 触发方式：
+  - 手动触发（workflow_dispatch）
+  - 推送类似 `v0.1.1` 的 tag
+
+当你推送版本 tag 时，工作流会构建并把 `dist/ManDongDong.exe` 挂到 Release 里。
+
 ## 目前已知限制
 
-- 当前桌面版是通过子进程调用下载核心，不是把下载逻辑完全重写进 GUI。
+- 桌面版已经支持 packaged / frozen 模式下自启动 downloader worker，不再依赖外部 `.py` 路径。
+- 当前桌面版仍然是通过子进程调用下载核心，不是把下载逻辑完全重写进 GUI。
 - 停止任务目前属于 MVP 式“直接终止进程”，还不是细粒度的优雅取消。
 - 进度主要根据页级信号估算，不是按图片精确统计。
 - Scrapling 首次安装运行时可能会比较慢。

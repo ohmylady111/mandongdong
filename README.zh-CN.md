@@ -6,6 +6,8 @@
 
 [English README](./README.md)
 
+![漫咚咚展示图](./screenshots/mandongdong-hero.svg)
+
 ## 这是个什么项目
 
 漫咚咚是一个基于 **PySide6 原生桌面界面** + **Scrapling 抓取能力** 的下载工具。
@@ -42,7 +44,7 @@
 ├── make_program_icon.py                    # 经典图标生成脚本
 ├── make_program_icon_anime.py              # 二次元图标生成脚本
 ├── windows-exe-bundle/                     # Windows 打包材料
-└── screenshots/                            # 截图占位目录
+└── screenshots/                            # 展示图 / 截图资源
 ```
 
 ## 运行要求
@@ -94,6 +96,6 @@ python3 authorized_manga_downloader_desktop.py
 
 请只用于你**有权访问和归档**的来源。
 
-## 截图
+## 许可证
 
-后续可以把程序截图放到 `screenshots/` 目录，再补进 README。
+[MIT](./LICENSE)

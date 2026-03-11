@@ -6,6 +6,8 @@ A cute-yet-practical desktop downloader for **authorized manga / comic / gallery
 
 [简体中文说明 / Chinese README](./README.zh-CN.md)
 
+![ManDongDong hero](./screenshots/mandongdong-hero.svg)
+
 ## What it is
 
 ManDongDong is a PySide6 desktop GUI that wraps a Scrapling-powered downloader.
@@ -42,7 +44,7 @@ Working features:
 ├── make_program_icon.py                    # classic icon generator
 ├── make_program_icon_anime.py              # anime-style icon generator
 ├── windows-exe-bundle/                     # Windows packaging materials
-└── screenshots/                            # screenshot placeholders
+└── screenshots/                            # screenshots / hero assets
 ```
 
 ## Requirements
@@ -94,6 +96,6 @@ Expected outputs:
 
 Only use this project for sources you are authorized to access and archive.
 
-## Screenshots
+## License
 
-You can place screenshots in `screenshots/` later and reference them here.
+[MIT](./LICENSE)
